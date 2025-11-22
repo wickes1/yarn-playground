@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <EmitSourceMap>true</EmitSourceMap>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DotNetJS" Version="0.23.4" />
+    <PackageReference Include="YarnSpinner" Version="3.0.2" />
+    <PackageReference Include="YarnSpinner.Compiler" Version="3.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Components" Version="10.0.0" />
+  </ItemGroup>
+
+</Project>

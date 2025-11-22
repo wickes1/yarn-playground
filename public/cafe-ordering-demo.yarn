@@ -1,0 +1,145 @@
+title: Start
+tags: intro mystery
+colorID: 0
+position: 100,100
+---
+<<declare $clues_found = 0>>
+<<declare $has_key = false>>
+<<declare $trust_level = 0>>
+<<declare $investigated_library = false>>
+
+You wake up in a mysterious mansion with no memory of how you got here. #narration
+
+A note on the table reads: "Find the three clues to escape." #narration
+
+-> Explore the library 📚
+    <<jump Library>>
+-> Check the garden 🌺
+    <<jump Garden>>
+-> Examine the locked door 🚪
+    <<jump LockedDoor>>
+===
+
+title: Library
+tags: location clue_location
+colorID: 2
+position: 400,50
+---
+<<set $investigated_library to true>>
+
+The library is filled with ancient books. Dust dances in the sunlight. #narration
+
+<<if $clues_found >= 1>>
+    You notice something you missed before... #thought
+<<endif>>
+
+-> Search the bookshelf 🔍
+    You find a mysterious journal! It mentions a hidden key in the garden. #discovery
+    <<set $clues_found to $clues_found + 1>>
+    <<jump Explore>>
+-> Read the desk papers 📄
+    The papers are covered in strange symbols. You can't understand them yet. #narration
+    <<jump Explore>>
+===
+
+title: Garden
+tags: location clue_location
+colorID: 3
+position: 400,300
+---
+The garden is overgrown but beautiful. Roses bloom everywhere. #narration
+
+<<if $investigated_library>>
+    You remember the journal mentioned a key here! #thought
+<<endif>>
+
+-> Dig near the old fountain ⛲
+    <<if $investigated_library>>
+        You find a rusty key! #discovery
+        <<set $has_key to true>>
+        <<set $clues_found to $clues_found + 1>>
+    <<else>>
+        Nothing but dirt and roots. Maybe you need a hint first? #narration
+    <<endif>>
+    <<jump Explore>>
+-> Smell the roses 🌹
+    They smell wonderful, but this doesn't help you escape. #narration
+    <<set $trust_level to $trust_level + 1>>
+    <<jump Explore>>
+===
+
+title: LockedDoor
+tags: location puzzle
+colorID: 4
+position: 400,550
+---
+A heavy wooden door blocks your way. There's a keyhole. #narration
+
+<<if $has_key>>
+    You have the key! But the inscription reads: "Only those who find all three clues may pass." #narration
+    <<if $clues_found >= 3>>
+        <<jump Victory>>
+    <<else>>
+        You need {3 - $clues_found} more clue(s)! #thought
+        <<jump Explore>>
+    <<endif>>
+<<else>>
+    The door is locked. You need a key. #narration
+    <<jump Explore>>
+<<endif>>
+===
+
+title: Explore
+tags: hub
+colorID: 1
+position: 700,300
+---
+Where do you want to go? #thought
+
+Clues found: {$clues_found}/3 | Key: {$has_key} #status
+
+-> The library 📚
+    <<jump Library>>
+-> The garden 🌺
+    <<jump Garden>>
+-> The locked door 🚪
+    <<jump LockedDoor>>
+<<if $clues_found >= 2 and !$has_key>>
+-> Search more carefully... 🔎
+    <<jump SecretClue>>
+<<endif>>
+===
+
+title: SecretClue
+tags: secret clue_location
+colorID: 5
+position: 700,500
+---
+You notice a painting that looks odd... #thought
+
+Behind it, you find the third clue: a map of the mansion! #discovery
+<<set $clues_found to $clues_found + 1>>
+<<set $trust_level to $trust_level + 2>>
+<<jump Explore>>
+===
+
+title: Victory
+tags: ending success
+colorID: 2
+position: 900,300
+---
+🎉 You insert the key and turn it slowly... 🎉 #narration
+
+The door swings open! Beyond it, you see sunlight and freedom! #discovery
+
+You solved the mystery and escaped the mansion! #success
+
+**Final Stats:**
+- Clues Found: {$clues_found}
+- Trust Level: {$trust_level}
+- Key Obtained: {$has_key}
+
+Congratulations! You're free! 🌟 #final
+
+<<stop>>
+===
