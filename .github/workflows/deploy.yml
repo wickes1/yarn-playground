@@ -3,9 +3,11 @@ name: Deploy to Cloudflare Pages
 on:
   push:
     branches: [main]
+  workflow_dispatch:
 
 jobs:
-  deploy:
+  build-dotnet:
+    name: Build .NET WebAssembly
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -14,6 +16,25 @@ jobs:
         with:
           dotnet-version: '10.0.x'
           dotnet-quality: 'preview'
+
+      - name: Build .NET WebAssembly runtime
+        run: |
+          cd csharp/YarnSpinnerJS
+          dotnet build -c Release
+
+      - name: Upload _framework artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dotnet-framework
+          path: csharp/YarnSpinnerJS/bin/Release/net10.0/wwwroot/_framework
+          retention-days: 1
+
+  build-frontend:
+    name: Build Frontend
+    needs: build-dotnet
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
 
       - uses: pnpm/action-setup@v4
         with:
@@ -24,19 +45,35 @@ jobs:
           node-version: '22'
           cache: 'pnpm'
 
-      - name: Build .NET WebAssembly runtime
-        run: |
-          cd csharp/YarnSpinnerJS
-          dotnet build -c Release
-
-      - name: Copy _framework to public
-        run: cp -r csharp/YarnSpinnerJS/bin/Release/net10.0/wwwroot/_framework public/
+      - name: Download _framework artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: dotnet-framework
+          path: public/_framework
 
       - name: Install dependencies
         run: pnpm install
 
       - name: Build
         run: pnpm build
+
+      - name: Upload dist artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist
+          retention-days: 1
+
+  deploy:
+    name: Deploy to Cloudflare
+    needs: build-frontend
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download dist artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
 
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3
