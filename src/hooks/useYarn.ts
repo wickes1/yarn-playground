@@ -128,11 +128,6 @@ export function useYarn() {
                 console.error('Compilation Diagnostics:', result.Diagnostics);
             }
 
-            console.log('=== PARSE RESULT ===');
-            console.log('Success:', result.Success);
-            console.log('InitialValues:', result.InitialValues);
-            console.log('Nodes:', result.Nodes.length);
-
             setParseResult(result);
             return result;
         } catch (err) {

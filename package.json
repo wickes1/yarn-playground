@@ -1,6 +1,6 @@
 {
   "name": "yarn-playground",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Yarn Playground - Interactive Yarn Spinner script editor and visualizer",
   "main": "index.js",
   "scripts": {
@@ -15,11 +15,21 @@
     "yarn-spinner",
     "parser",
     "typescript",
-    "unity"
+    "webassembly",
+    "blazor",
+    "playground"
   ],
-  "author": "",
+  "author": "Wickes1",
   "license": "MIT",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wickes1/yarn-playground.git"
+  },
+  "bugs": {
+    "url": "https://github.com/wickes1/yarn-playground/issues"
+  },
+  "homepage": "https://yarn.wickend.dev",
   "devDependencies": {
     "@tailwindcss/vite": "^4.1.17",
     "@types/dagre": "^0.7.53",

@@ -599,3 +599,6 @@ csharp/YarnSpinnerJS/obj/
 public/_framework/
 src/_framework
 tmp/
+
+# Local-only documentation (kept on disk, never committed)
+docs/

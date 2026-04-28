@@ -3,7 +3,7 @@ import { Editor } from './components/Editor';
 import { Visualizer } from './components/Visualizer';
 import { Runner } from './components/Runner';
 import { useYarn } from './hooks/useYarn';
-import { Play, Network, Terminal, Copy, Trash2, RotateCcw, BookOpen } from 'lucide-react';
+import { Play, Network, Terminal, Copy, Trash2, RotateCcw, BookOpen, Github } from 'lucide-react';
 import clsx from 'clsx';
 import packageJson from '../package.json';
 
@@ -52,13 +52,24 @@ export default function App() {
                 <div className="flex items-center gap-2.5">
                     <BookOpen size={18} className="text-sepia" />
                     <h1 className="font-semibold text-base tracking-tight text-ink">
-                        Yarn Explorer
+                        Yarn Playground
                     </h1>
                     <span className="text-xs text-muted ml-1">v{packageJson.version}</span>
                 </div>
 
                 <div className="flex items-center gap-3">
                     <StatusBadge isReady={isReady} />
+                    <span className="w-px h-5 bg-border" aria-hidden="true" />
+                    <a
+                        href="https://github.com/wickes1/yarn-playground"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-1.5 rounded text-sepia hover:text-ink hover:bg-surface-4 transition-colors"
+                        title="View source on GitHub"
+                        aria-label="View source on GitHub"
+                    >
+                        <Github size={16} />
+                    </a>
                 </div>
             </header>
 
